@@ -5,7 +5,7 @@
 
 rm(list=ls())
 
-setwd("~/Colin/Keck Center/Equivelancy/Equivalency Package 3.0")
+setwd("/path/to/directory")
 
 source("processStability.R")
 source("cumulativeSamplingSequence.R")
