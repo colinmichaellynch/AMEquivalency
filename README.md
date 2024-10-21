@@ -1,4 +1,4 @@
 ## AMEquivalency
-#Determining Univariate Equivalency Between a Reference and Candidate Process
+# Determining Univariate Equivalency Between a Reference and Candidate Process
 
 test
