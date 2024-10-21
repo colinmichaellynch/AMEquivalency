@@ -7,17 +7,7 @@ rm(list=ls())
 
 setwd("/path/to/directory")
 
-source("processStability.R")
-source("cumulativeSamplingSequence.R")
-source("candidateChiSquared.R")
-source("candidateCramersV.R")
-source("stoppingRule.R")
-source("possibleSamplingStrats.R")
-source("truncatedGeometricPMF.R")
-source("simulateExperiment.R")
-source("optimalStrategy.R")
-
-library(tidyverse)
+library(AMEquivalency)
 
 ### set constants
 
