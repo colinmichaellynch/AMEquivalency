@@ -1,5 +1,3 @@
-#' @export
-
 ### --- prepare workspace --- ### 
 
 #clear directory, load packages, load functions
