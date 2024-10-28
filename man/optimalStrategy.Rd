@@ -17,13 +17,39 @@ optimalStrategy(
 )
 }
 \arguments{
-\item{data}{dataframe derived from simulateExperiment function}
+\item{data}{dataframe containing numerical results from simulateExperiment function.}
 
-\item{wVec}{a 3 element vector which represents the weights for each desirability function. The first index corresponds to power, the second to sample size, and the third to the false positive rate. Each value must be between 0 and 1 and the sum of all 3 must equal 1.}
+\item{wVec}{a 3 element numeric vector which represents the weights for each desirability function. The first index corresponds to power, the second to sample size, and the third to the false positive rate. Each value must be between 0 and 1 and the sum of all 3 must equal 1.}
+
+\item{L1}{a numeric value representing the lowest acceptable level of power.}
+
+\item{T1}{a numeric value representing the target level of power.}
+
+\item{T2}{a numeric value representing the target sample size.}
+
+\item{U2}{a numeric value representing the maximum acceptable sample size.}
+
+\item{T3}{a numeric value representing the target false positive rate.}
+
+\item{U3}{a numeric value representing the maximal acceptable false positive rate.}
+
+\item{k}{a numeric value giving the concavity of each desirability function.}
 }
 \value{
-Optimal sampling strategy given by N_1 and T, the final power level, expected sample size (given the two processes are not equivalent), and false positive rate of this design
+A list containing the metrics and experimental parameters of the optimal sampling strategy.
+\describe{
+\item{finalPower}{The value of the optimal power level.}
+\item{finalSampleSize}{The value of the optimal expected sample size.}
+\item{finalFP}{The value of the optimal false positive rate.}
+\item{N1}{The value of the optimal initial sample size.}
+\item{T}{The value of the optimal number of sequential samples.}
+}
 }
 \description{
-This function runs simulations which finds the optimal sampling strategy given various experimental constraints.
+Finds the optimal sampling strategy given results from simulations.
 }
+\section{Details}{
+
+There are 3 metrics that can be considered when selecting optimal sampling strategies; power, the false positive rate, and the expected sample size (given that the reference and candidate processes are not equivalent). The strategy which best trades-off these metrics can be considered the optimal sampling strategy. This function performs multi-objective optimization with desirability functions, converting each metric into a desirability value and then finding the sampling strategy that maximizes the product of the desirabilities taken to the weights associated with each desirability. The metrics are derived from simulations given by the simulateExperiment function.
+}
+
