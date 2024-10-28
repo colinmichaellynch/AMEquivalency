@@ -7,15 +7,17 @@
 truncatedGeometricPMF(bins, p, b)
 }
 \arguments{
-\item{bins}{a vector containing the indeces for each bin}
+\item{bins}{a vector containing the indeces for each bin.}
 
-\item{p}{rho governing how much of the data is either uniformly distributed or clustered to one side of the distribution}
+\item{p}{rho governing how much of the data is either uniformly distributed or clustered to one side of the distribution.}
 
-\item{b}{the number of bins}
+\item{b}{the number of bins.}
 }
 \value{
-vector containing PMF values for 1 to b bins corresponding to truncated geometric distribution set by p
+\describe{
+\item{pmfTruncated}{A vector containing PMF values for 1 to b bins corresponding to truncated geometric distribution set by p.}
+}
 }
 \description{
-This function generates the PMF of a truncated geometric distribution
+This function generates the PMF of a truncated geometric distribution.
 }
