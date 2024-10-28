@@ -7,7 +7,7 @@
 #' @param alpha significance level
 #' @return
 #'   \describe{
-#'     \item{continueSampling}{A logical representing the decision to continue sampling. If continueSampling == TRUE, keep going unless t = T. If continueSampling == FALSE, stop sampling.}
+#'     \item{stop}{A logical representing the decision to continue sampling. If stop == TRUE, keep going unless t = T. If stop == FALSE, stop sampling.}
 #'    }
 #' @export
 
@@ -15,12 +15,12 @@ stoppingRule = function(cramersV, N, b, alpha = .01){
 
   criticalChiSquare = qchisq(alpha, df = N-1)
   upperVal = 1/sqrt(N*(b-1)) * sqrt(criticalChiSquare)
-  if(cramersV<upperVal){
-    continueSampling = TRUE
+  if(cramersV>upperVal){
+    stop = TRUE
   } else {
-    continueSampling = FALSE
+    stop = FALSE
   }
 
-  return(continueSampling)
+  return(stop)
 
 }
