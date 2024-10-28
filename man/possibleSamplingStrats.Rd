@@ -11,6 +11,12 @@ possibleSamplingStrats(N_1T_Max = 40)
 }
 \value{
 List of N_1 and T values which produce strategies whose final sample size is equal to N_1T_Max
+
+A list containing pairs of values which determine all of the sampling strategy whose final sample size is equal to N_1T_Max.
+\describe{
+\item{TVecAcceptable}{A numeric vector containing all values of T.}
+\item{n1VecAcceptable}{A numeric vector containing all values of N1.}
+}
 }
 \description{
 This function finds all of the possible sampling strategies whose final sample size is equal to a constant set by the user (N_1T_Max).
