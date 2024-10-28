@@ -7,14 +7,22 @@
 candidateChiSquared(data, bins, show.plot = TRUE)
 }
 \arguments{
-\item{data}{values derived from chronological experiment}
+\item{data}{a numeric vector or matrix containing values derived from candidate process measurements.}
 
-\item{bins}{percentiles of reference distribution}
+\item{bins}{a numeric vector containing percentiles of reference distribution.}
+
+\item{show.plot}{a logical indicating whether to show the x-bar chart.}
 }
 \value{
-chi squared value
+\describe{
+\item{chiSquared}{A value representing the candidate chi square value}
+}
 }
 \description{
-This function calculates the chi squared value of the candidate process as it fits to the bins defined by the reference process
-Data must be in the following form to work: it must have n rows (number of observations per subgroup) and m columns (number of subgroups) where the columns are in chronological order of measurement. Each cell must contain a numeric value. bins must be defined by quantile function (see tutorial)
+This function calculates the chi squared value of the candidate process as it fits to the bins defined by the reference process.
 }
+\section{Details}{
+
+Data must be in the following form: it must have n rows (number of observations per subgroup) and m columns (number of subgroups) where the columns are in chronological order of measurement. Each cell must contain a numeric value. Bins must be defined by quantile function (see tutorial).
+}
+
