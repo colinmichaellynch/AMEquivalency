@@ -7,13 +7,17 @@
 processStability(data, show.plot = TRUE)
 }
 \arguments{
-\item{data}{values derived from chronological experiment}
+\item{data}{values derived from chronological experiment.}
 }
 \value{
-The number of out of control points and x-bar chart
+\describe{
+\item{OOC}{The number of out of control points and x-bar chart.}
+}
 }
 \description{
-This function generates an x-bar chart of the variable measured from the reference process.
-It also counts the number of points that fall outside of the control limits.
+This function generates an x-bar chart of the variable measured from the reference process and counts the number of out of control points.
+}
+\section{Details}{
+
 Data must be in the following form to work: it must have n rows (number of observations per subgroup) and m columns (number of subgroups) where the columns are in chronological order of measurement. Each cell must contain a numeric value.
 }
