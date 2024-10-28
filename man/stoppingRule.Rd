@@ -17,10 +17,9 @@ stoppingRule(cramersV, N, b, alpha = 0.01)
 }
 \value{
 \describe{
-\item{continueSampling}{A logical representing the decision to continue sampling. If continueSampling == TRUE, keep going unless t = T. If continueSampling == FALSE, stop sampling.}
+\item{stop}{A logical representing the decision to continue sampling. If stop == TRUE, keep going unless t = T. If stop == FALSE, stop sampling.}
 }
 }
 \description{
 This function takes the cramers v of a sample and other aspects of the design to determine whether or not the statistic is outside the limits expected for that design given the null hypothesis that the candidate and reference processes are equivalent.
 }
-
