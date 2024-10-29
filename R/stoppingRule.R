@@ -13,7 +13,7 @@
 
 stoppingRule = function(cramersV, N, b, alpha = .01){
 
-  criticalChiSquare = qchisq(alpha, df = N-1)
+  criticalChiSquare = qchisq(p = alpha, df = b - 1, lower.tail = FALSE)
   upperVal = 1/sqrt(N*(b-1)) * sqrt(criticalChiSquare)
   if(cramersV>upperVal){
     stop = TRUE
