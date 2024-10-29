@@ -34,10 +34,12 @@ dataRef = dataRef[, -1]
 outOfControlCount = processStability(dataRef, show.plot = TRUE)
 print(paste("# Out of Control Points:", outOfControlCount))
 
-#If the process is stable, then we can characterize the distribution by dividing it into b equally-likely bins with using percentiles 
+#If the process is stable, then we can characterize the distribution by dividing it into b equally-likely bins with using percentiles. Ensure that the first and last bin limits are set to negative infinity and infinity, respectively  
 dataRef = as.vector(as.matrix(dataRef))
 percentileVec = seq(0, 1, length.out = b+1)
 bins = quantile(dataRef, percentileVec)
+bins[1] = -Inf
+bins[b+1] = Inf
 
 #We will use sequential sampling to measure the candidate process. We first set the maximal initial sample size/number of samples we are willing to take. This then gives us a family of possible strategies we can use to sample with. 
 
