@@ -32,7 +32,7 @@ k = 2 #concavity of desirability functions
 
 #Now we will characterize the reference dataset. Here, we will play around with an artificially created dataset for illistrative purposes. Feel free to replace this dataset with your own. This dataset must be n by m in size, where n is the samples per subgroups and m is the number of subgroups. Each cell must contain a numeric value. The minimal sample size is n = 2 and m = 20. 
 
-dataRef = read.csv(ReferenceDataFile)
+dataRef = read.csv(ReferenceDataFile, header = FALSE)
 
 #we will first determine whether or not the process is stable using an x-bar chart. This function will also count the number of points that fall outside of the control limits
 outOfControlCount = processStability(dataRef, show.plot = TRUE)
