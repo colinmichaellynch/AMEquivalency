@@ -75,7 +75,7 @@ print(sequence)
 
 #Now we will do an equivalency test on a sample which is the equivalent to the reference. In our example case, we are assuming that we are already partway through our sequential sampling regimen. We will first import the candidate data: 
 
-dataCandEquivalent = read.csv(CandidateEquivalentFile)
+dataCandEquivalent = read.csv(CandidateEquivalentFile, header = FALSE)
 
 #Then we will measure its chi square value (how different the sample is from the expectation that all observations should be uniformly distributed among the reference bins). The graph illustrates how well this uniform assumption holds
 
@@ -91,7 +91,7 @@ stoppingRule(cramersV, N, b, alpha)
 #in this case, you would keep sampling until you've reached the end of the sequence as determined by cumulativeSamplingSequence (assuming that every sample says that the two processes are equivalent)
 
 #we now go through the same process for the process which is not equivalent to the reference. Here, the final decision value is 'true'. If this happens, you can stop and determine that the two are not equivalent. 
-dataCandNotEquivalent = read.csv(CandidateNotEquivalentFile)
+dataCandNotEquivalent = read.csv(CandidateNotEquivalentFile, header = FALSE)
 
 chiSquare = candidateChiSquared(dataCandNotEquivalent, bins, show.plot = TRUE)
 N = length(dataCandNotEquivalent)
