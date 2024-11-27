@@ -16,9 +16,9 @@ stoppingRule = function(cramersV, N, b, alpha = .01){
   criticalChiSquare = qchisq(p = alpha, df = b - 1, lower.tail = FALSE)
   upperVal = 1/sqrt(N*(b-1)) * sqrt(criticalChiSquare)
   if(cramersV>upperVal){
-    stop = TRUE
+    stop = "Stop sampling, the processes are not equivalent"
   } else {
-    stop = FALSE
+    stop = "Keep sampling, the processes are equivalent so far, only stop if this is the final sample"
   }
 
   return(stop)
