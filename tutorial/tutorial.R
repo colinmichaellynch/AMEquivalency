@@ -8,6 +8,11 @@ library(devtools)
 install_github("colinmichaellynch/AMEquivalency")
 library(AMEquivalency)
 
+setwd("your/directory/here")
+ReferenceDataFile = "200_135_CDSum 4.csv"
+CandidateEquivalentFile = "CandidateEquivalentSample.csv"
+CandidateNotEquivalentFile = "CandidateNotEquivalentSample.csv"
+
 #Next, we will set our experimental constraints: 
 
 b = 8 #number of bins
@@ -27,11 +32,15 @@ k = 2 #concavity of desirability functions
 
 #Now we will characterize the reference dataset. Here, we will play around with an artificially created dataset for illistrative purposes. Feel free to replace this dataset with your own. This dataset must be n by m in size, where n is the samples per subgroups and m is the number of subgroups. Each cell must contain a numeric value. The minimal sample size is n = 2 and m = 20. 
 
-dataRef = read.csv("ReferenceData.csv", header = FALSE)
+dataRef = read.csv(ReferenceDataFile)
 
 #we will first determine whether or not the process is stable using an x-bar chart. This function will also count the number of points that fall outside of the control limits
 outOfControlCount = processStability(dataRef, show.plot = TRUE)
 print(paste("# Out of Control Points:", outOfControlCount))
+
+if(outOfControlCount > 0){
+  stop("The process is not stable, Do Not Continue.");
+}
 
 #If the process is stable, then we can characterize the distribution by dividing it into b equally-likely bins with using percentiles. Ensure that the first and last bin limits are set to negative infinity and infinity, respectively  
 dataRef = as.vector(as.matrix(dataRef))
@@ -66,7 +75,7 @@ print(sequence)
 
 #Now we will do an equivalency test on a sample which is the equivalent to the reference. In our example case, we are assuming that we are already partway through our sequential sampling regimen. We will first import the candidate data: 
 
-dataCandEquivalent = read.csv("CandidateEquivalentSample.csv", header = FALSE)
+dataCandEquivalent = read.csv(CandidateEquivalentFile)
 
 #Then we will measure its chi square value (how different the sample is from the expectation that all observations should be uniformly distributed among the reference bins). The graph illustrates how well this uniform assumption holds
 
@@ -82,7 +91,7 @@ stoppingRule(cramersV, N, b, alpha)
 #in this case, you would keep sampling until you've reached the end of the sequence as determined by cumulativeSamplingSequence (assuming that every sample says that the two processes are equivalent)
 
 #we now go through the same process for the process which is not equivalent to the reference. Here, the final decision value is 'true'. If this happens, you can stop and determine that the two are not equivalent. 
-dataCandNotEquivalent = read.csv("CandidateNotEquivalentSample.csv", header = FALSE)
+dataCandNotEquivalent = read.csv(CandidateNotEquivalentFile)
 
 chiSquare = candidateChiSquared(dataCandNotEquivalent, bins, show.plot = TRUE)
 N = length(dataCandNotEquivalent)
