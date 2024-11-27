@@ -45,7 +45,7 @@ if(outOfControlCount > 0){
 #If the process is stable, then we can characterize the distribution by dividing it into b equally-likely bins with using percentiles. Ensure that the first and last bin limits are set to negative infinity and infinity, respectively  
 dataRef = as.vector(as.matrix(dataRef))
 percentileVec = seq(0, 1, length.out = b+1)
-bins = quantile(dataRef, percentileVec)
+bins = quantile(dataRef, percentileVec, na.rm = TRUE)
 bins[1] = -Inf
 bins[b+1] = Inf
 
