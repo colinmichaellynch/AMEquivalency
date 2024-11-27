@@ -1,6 +1,6 @@
 # AMEquivalency
 
-R package used to determine equivalency between reference and candidate process 
+R package used to determine equivalency between reference and candidate process. A big thank you to Cesar Gomez Guillen (https://github.com/cfgomezguil) for helping to optimize this code.   
 
 ## How to install
 
