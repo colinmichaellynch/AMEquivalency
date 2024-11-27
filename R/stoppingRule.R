@@ -7,7 +7,7 @@
 #' @param alpha significance level
 #' @return
 #'   \describe{
-#'     \item{stop}{A logical representing the decision to continue sampling. If stop == TRUE, keep going unless t = T. If stop == FALSE, stop sampling.}
+#'     \item{stop}{A string representing the decision to continue sampling.}
 #'    }
 #' @export
 
