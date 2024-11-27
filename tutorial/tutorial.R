@@ -9,7 +9,7 @@ install_github("colinmichaellynch/AMEquivalency")
 library(AMEquivalency)
 
 setwd("your/directory/here")
-ReferenceDataFile = "200_135_CDSum 4.csv"
+ReferenceDataFile = "ReferenceData.csv"
 CandidateEquivalentFile = "CandidateEquivalentSample.csv"
 CandidateNotEquivalentFile = "CandidateNotEquivalentSample.csv"
 
