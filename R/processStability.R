@@ -17,24 +17,13 @@ processStability = function(data, show.plot = TRUE) {
   R = apply(data, 2, max)-apply(data, 2, min)
   RBar = mean(R)
   n = nrow(data)
-  if(n == 2){
-    A2 = 1.88
-  } else if(n == 3){
-    A2 = 1.02
-  } else if(n == 4){
-    A2 = .73
-  } else if(n == 5){
-    A2 = .58
-  } else if(n == 6){
-    A2 = .48
-  } else if(n == 7){
-    A2 = .42
-  } else if(n == 8){
-    A2 = .37
-  } else if(n == 9){
-    A2 = .34
-  } else if(n == 10){
-    A2 = .31
+
+  A2_Values = c('2' = 1.88, '3' = 1.02, '4' = 0.73, '5' = 0.58, '6' = 0.48, 
+                 '7' = 0.42, '8' = 0.37, '9' = 0.34, '10' = 0.31)
+  if(as.character(n) %in% names(A2_Values)){
+    A2 = A2_Values[as.character(n)]
+  } else {
+    stop("Error. number of row values is not implemented")
   }
 
   LCL = xBarBar - A2*RBar
