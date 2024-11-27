@@ -22,8 +22,11 @@ candidateChiSquared = function(data, bins, show.plot = TRUE){
   chiSquared = sum((observed-(N/b))^2/(N/b))
 
   if(show.plot){
+    old_par = par(no.readonly = TRUE)
+    par(mar = c(6, 5, 3, 1) - 0.25)
     dataPlot = data.frame(Bins = names(observed), Count = as.numeric(observed))
-    barplot(height = dataPlot$Count, names.arg = dataPlot$Bins, xlab = "", ylab = "Count", las = 2)
+    barplot(height = dataPlot$Count,names.arg = dataPlot$Bins,xlab = "",ylab = "Count",las = 2,cex.names = 0.8)
+    par(old_par)
   }
 
   return(chiSquared)
