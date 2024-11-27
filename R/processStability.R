@@ -30,10 +30,13 @@ processStability = function(data, show.plot = TRUE) {
   UCL = xBarBar + A2*RBar
 
   if(show.plot){
+    old_par = par(no.readonly = TRUE)
+    par(mar = c(4, 3, 3, 2) + 0.1, xpd = FALSE)
     plt = plot(xBar, xlab = "Time Order", ylab = "X Bar", main = "Control Chart", ylim = c(min(c(xBar, LCL)) - (min(c(xBar, LCL))*.05), max(c(xBar, UCL)) + (max(c(xBar, UCL))*.05)), pch = 19)
     abline(h = LCL, lty = 2, lwd = 2)
     abline(h = UCL, lty = 2, lwd = 2)
     abline(h = xBarBar)
+    par(old_par)
   }
 
   OOC = sum(xBar < LCL | xBar > UCL)
