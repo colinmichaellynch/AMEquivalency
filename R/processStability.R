@@ -12,9 +12,9 @@
 
 processStability = function(data, show.plot = TRUE) {
 
-  xBar = colMeans(data)
-  xBarBar = mean(xBar)
-  R = apply(data, 2, max)-apply(data, 2, min)
+  xBar = colMeans(data, na.rm=TRUE)
+  xBarBar = mean(xBar, na.rm=TRUE)
+  R = apply(data, 2, max, na.rm=TRUE)-apply(data, 2, min, na.rm=TRUE)
   RBar = mean(R)
   n = nrow(data)
 
