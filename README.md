@@ -23,4 +23,5 @@ Note that data files need to have a specific structure to be process properly. T
 ![referenceData](https://github.com/user-attachments/assets/8d721a17-b171-4836-b30b-6827321d17af)
 
 Conversely, the candidate dataset only needs a single column with the values of all observations: 
+
 ![candidateData](https://github.com/user-attachments/assets/a4de25a1-46cb-4dc2-9603-aed92818a7c0)
