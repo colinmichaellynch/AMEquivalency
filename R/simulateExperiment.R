@@ -15,143 +15,116 @@
 #'     \item{data}{A dataframe containing the power levels, sample sizes, and false positive rates of various combinations of N_1 and T.}
 #'    }
 #' @export
-
-simulateExperiment = function(b = 8, alpha = .01, n_max = 499, simulations = 100, iterations = 100, TVecAcceptable, n1VecAcceptable){
-
-  bins = 1:b
-  chiSquareU = qchisq(p = alpha, df = b-1, lower.tail = FALSE)
-  n = 1:n_max
-  vTilde = sqrt(n)/n
-  A = (sqrt(2)*gamma(b/2))/(sqrt(b-1)*gamma((b-1)/2))
-
-  pVec = c()
-  n1Vec = c()
-  TVec = c()
-  tPass = c()
-  powerVec = c()
-  falsePositive = c()
-  cramersVVec = c()
-  sampleSize = c()
-  counter = 0
-
-  for(m in 1:length(TVecAcceptable)){
-
-    T = TVecAcceptable[m]
-    n_1 = n1VecAcceptable[m]
-    s = (1-n_1)/T
-    n_t = round(((1:T)*n_1)+((((1:T)-1)*((1:T)+2))/2)*s)
-
-    for(i in 1:simulations){
-
-      counter = counter+1
-      p = runif(1, 0, 1)
-      probabilities = sapply(bins, truncatedGeometricPMF, p = p, b = b)
-      truePosCounter = 0
-      TPassTotal = c()
-      cramersVPass = c()
-      cramersV = c()
-      sampleSizeVec = c()
-
-      for(j in 1:iterations){
-
-        for(t in 1:T){
-
-          if(t == 1){
-            sampleRaw = sample(1:b, n_t[1], replace = TRUE, prob = probabilities)
-          } else {
-            sampleRaw = c(sampleRaw, sample(1:b, n_t[t]-n_t[t-1], replace = TRUE, prob = probabilities))
-          }
-
-          sample = table(factor(sampleRaw, levels = 1:b))
-          chiSquare = sum(((sample-rep(n_t[t]/b, b))^2)/rep(n_t[t]/b, b))
-          cramersV[t] = sqrt(chiSquare/n_t[t])/sqrt(b-1)
-
-        }
-
-        cramersVUpper = sqrt(chiSquareU/n_t)/sqrt(b-1)
-
-        if(any(cramersV>cramersVUpper)){
-          truePosCounter = truePosCounter + 1
-          TPassTotal[j] = min(which(cramersV>cramersVUpper))
-          cramersVPass[j] = cramersV[TPassTotal[j]]
-          sampleSizeVec[j] = n_t[TPassTotal[j]]
+simulateExperiment <- function(b = 8, alpha = 0.01, n_max = 499, simulations = 100, iterations = 100, TVecAcceptable, n1VecAcceptable) {
+  
+  # Set constants
+  chiSquareU <- qchisq(p = alpha, df = b - 1, lower.tail = FALSE)
+  bins <- 1:b
+  A <- (sqrt(2) * gamma(b / 2)) / (sqrt(b - 1) * gamma((b - 1) / 2))
+  
+  # Helper function: Simulate one experiment
+  # Cleans variable workspace after experiment simulation complete
+  simulate_one_experiment <- function(probabilities, T, n_t, chiSquareU, iterations, b) {
+    tPass <- numeric(iterations)
+    cramersVPass <- numeric(iterations)
+    sampleSizeVec <- numeric(iterations)
+    
+    for (j in 1:iterations) {
+      sampleRaw <- numeric()
+      cramersV <- numeric(T)
+      
+      for (t in 1:T) {
+        if (t == 1) {
+          sampleRaw <- sample(1:b, n_t[1], replace = TRUE, prob = probabilities)
         } else {
-          TPassTotal[j] = NaN
-          cramersVPass[j] = NaN
-          sampleSizeVec[j] = NaN
+          sampleRaw <- c(sampleRaw, sample(1:b, n_t[t] - n_t[t - 1], replace = TRUE, prob = probabilities))
         }
-
+        
+        repVal <- rep(n_t[t] / b, b)
+        sample <- table(factor(sampleRaw, levels = 1:b))
+        chiSquare <- sum(((sample - repVal)^2) / repVal)
+        cramersV[t] <- sqrt(chiSquare / n_t[t]) / sqrt(b - 1)
       }
-
-      pVec[counter] = p
-      n1Vec[counter] = n_1
-      TVec[counter] = T
-      tPass[counter] = median(TPassTotal, na.rm = TRUE)
-      cramersVVec[counter] = median(cramersVPass, na.rm = TRUE)
-      sampleSize[counter] = median(sampleSizeVec, na.rm = TRUE)
-      powerVec[counter] = truePosCounter/iterations
-      falsePositive[counter] =NaN
-
-    }
-
-    for(i in 1:simulations){
-
-      counter = counter+1
-      probabilities = rep(1/b, b)
-      falsePositiveCounter = 0
-      TPassTotal = c()
-      cramersVPass = c()
-      cramersV = c()
-      sampleSizeVec = c()
-
-      for(j in 1:iterations){
-
-        for(t in 1:T){
-
-          if(t == 1){
-            sampleRaw = sample(1:b, n_t[1], replace = TRUE, prob = probabilities)
-          } else {
-            sampleRaw = c(sampleRaw, sample(1:b, n_t[t]-n_t[t-1], replace = TRUE, prob = probabilities))
-          }
-
-          sample = table(factor(sampleRaw, levels = 1:b))
-          chiSquare = sum(((sample-rep(n_t[t]/b, b))^2)/rep(n_t[t]/b, b))
-          cramersV[t] = sqrt(chiSquare/n_t[t])/sqrt(b-1)
-
-        }
-
-        cramersVUpper = sqrt(chiSquareU/n_t)/sqrt(b-1)
-
-        if(any(cramersV>cramersVUpper)){
-          falsePositiveCounter = falsePositiveCounter + 1
-          TPassTotal[j] = min(which(cramersV>cramersVUpper))
-          cramersVPass[j] = cramersV[TPassTotal[j]]
-          sampleSizeVec[j] = n_t[TPassTotal[j]]
-        } else {
-          TPassTotal[j] = NaN
-          cramersVPass[j] = NaN
-          sampleSizeVec[j] = NaN
-        }
-
+      
+      cramersVUpper <- sqrt(chiSquareU / n_t) / sqrt(b - 1)
+      
+      if (any(cramersV > cramersVUpper)) {
+        tPass[j] <- min(which(cramersV > cramersVUpper))
+        cramersVPass[j] <- cramersV[tPass[j]]
+        sampleSizeVec[j] <- n_t[tPass[j]]
+      } else {
+        tPass[j] <- NaN
+        cramersVPass[j] <- NaN
+        sampleSizeVec[j] <- NaN
       }
-
-      pVec[counter] = p
-      n1Vec[counter] = n_1
-      TVec[counter] = T
-      tPass[counter] = NaN
-      cramersVVec[counter] = median(cramersVPass, na.rm = TRUE)
-      sampleSize[counter] = NaN
-      powerVec[counter] = NaN
-      falsePositive[counter] = falsePositiveCounter/iterations
-
     }
-
-    print(paste("Percent complete: ", m/length(TVecAcceptable)*100))
-
+    
+    list(
+      tPass = tPass,
+      cramersVPass = cramersVPass,
+      sampleSizeVec = sampleSizeVec
+    )
   }
-
-  data = (data.frame(p = pVec, n1 = n1Vec, T = TVec, tPass = tPass, cramersV = cramersVVec, Power = powerVec, SampleSize = sampleSize, falsePositive = falsePositive))
-
+  
+  # Initialize result vectors
+  results <- list(
+    pVec = c(), n1Vec = c(), TVec = c(), tPass = c(), cramersVVec = c(),
+    powerVec = c(), sampleSize = c(), falsePositive = c()
+  )
+  counter <- 0
+  
+  for (m in seq_along(TVecAcceptable)) {
+    T <- TVecAcceptable[m]
+    n_1 <- n1VecAcceptable[m]
+    s <- (1 - n_1) / T
+    n_t <- round(((1:T) * n_1) + (((1:T) - 1) * ((1:T) + 2) / 2) * s)
+    
+    # Run simulations for True Positive
+    for (i in 1:simulations) {
+      counter <- counter + 1
+      p <- runif(1, 0, 1)
+      probabilities <- sapply(bins, truncatedGeometricPMF, p = p, b = b)
+      
+      experiment_result <- simulate_one_experiment(probabilities, T, n_t, chiSquareU, iterations, b)
+      
+      results$pVec[counter] <- p
+      results$n1Vec[counter] <- n_1
+      results$TVec[counter] <- T
+      results$tPass[counter] <- median(experiment_result$tPass, na.rm = TRUE)
+      results$cramersVVec[counter] <- median(experiment_result$cramersVPass, na.rm = TRUE)
+      results$sampleSize[counter] <- median(experiment_result$sampleSizeVec, na.rm = TRUE)
+      results$powerVec[counter] <- sum(!is.na(experiment_result$tPass)) / iterations
+      results$falsePositive[counter] <- NaN
+    }
+    
+    # Run simulations for false positives (null hypothesis true)
+    for (i in 1:simulations) {
+      counter <- counter + 1
+      probabilities <- rep(1 / b, b)
+      
+      experiment_result <- simulate_one_experiment(probabilities, T, n_t, chiSquareU, iterations, b)
+      
+      results$pVec[counter] <- NaN
+      results$n1Vec[counter] <- n_1
+      results$TVec[counter] <- T
+      results$tPass[counter] <- NaN
+      results$cramersVVec[counter] <- median(experiment_result$cramersVPass, na.rm = TRUE)
+      results$sampleSize[counter] <- NaN
+      results$powerVec[counter] <- NaN
+      results$falsePositive[counter] <- sum(!is.na(experiment_result$tPass)) / iterations
+    }
+    
+    # make it a cleaner number for potential more bin count.
+    print(paste("Percent complete:", round(m / length(TVecAcceptable) * 100, 2)))
+  }
+  
+  # Combine results into a data frame
+  
+  data <- data.frame(
+    p = results$pVec, n1 = results$n1Vec, T = results$TVec, tPass = results$tPass,
+    cramersV = results$cramersVVec, Power = results$powerVec, SampleSize = results$sampleSize,
+    falsePositive = results$falsePositive
+  )
+  
   return(data)
-
 }
